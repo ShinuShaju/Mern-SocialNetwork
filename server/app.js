@@ -1,9 +1,10 @@
 const express = require('express')
 const app = express()
- 
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
+
+//importing routes
+const postRoutes = require('./routes/post.js');
+
+app.get('/', postRoutes.getPosts);
 
 
 const port = 8080;
