@@ -1,10 +1,15 @@
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
 
-//importing routes
-const { getPosts } = require('./routes/post.js');
 
-app.get('/', getPosts);
+//middleware
+app.use(morgan("dev"));
+
+//importing routes middleware
+const postRoutes = require('./routes/post.js');
+
+app.use('/', postRoutes);
 
 
 const port = 8080;
