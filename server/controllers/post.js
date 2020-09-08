@@ -1,4 +1,9 @@
 exports.getPosts = (req, res) => {
-    res.send('Hello World');
-}
+    res.json({
+        post: [
+            {title: "First Post" },
+            {title: "Second Post" }
+        ]
+    });
+};
 
