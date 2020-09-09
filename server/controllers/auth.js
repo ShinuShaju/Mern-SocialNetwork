@@ -1,0 +1,20 @@
+const User = require('../models/user')
+const user = require('../models/user')
+
+exports.signup = async (req, res) => {
+
+    const userExists = await User.findOne({ email: req.body.email });
+
+    if(userExists) 
+        return res.status(403).json({
+            error: 'This email id is taken!'
+        });
+
+    const user = await new User(req.body);
+    
+    await user.save();
+
+    res.status(200).json({ user });
+
+
+}
