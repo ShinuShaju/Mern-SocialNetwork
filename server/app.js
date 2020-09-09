@@ -21,7 +21,7 @@ const postRoutes = require('./routes/post.js');
 // middleware
 app.use(morgan("dev"));
 app.use(bodyParser.json());
-app.use(expressValidator);
+app.use(expressValidator());
 app.use('/', postRoutes);
 
 
