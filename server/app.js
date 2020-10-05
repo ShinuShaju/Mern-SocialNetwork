@@ -23,7 +23,7 @@ const authRoutes = require('./routes/auth.js');
 // middleware
 app.use(morgan("dev"));
 app.use(bodyParser.json());
-app.user(cookieParser());
+app.use(cookieParser());
 app.use(expressValidator());
 app.use('/', postRoutes);
 app.use('/', authRoutes);
