@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
 // virtual field
 userSchema.virtual('password')
 
-    .set((password) => {
+    .set(function(password) {
         // create temporary variable called _password
         this._password = password
         // generate a timestamp
@@ -38,13 +38,13 @@ userSchema.virtual('password')
         this.hashed_password = this.encryptPassword(password)
     })
 
-    .get(() => {
+    .get(function() {
         return this._password
-    })
+    });
 
 // methods
 userSchema.methods = {
-    encryptPassword: (password) => {
+    encryptPassword: function (password) {
             if(!password) return "";
             try {
                 return crypto.createHmac('sha256', this.salt)
