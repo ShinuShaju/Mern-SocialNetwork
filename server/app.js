@@ -29,7 +29,7 @@ app.use('/', postRoutes);
 app.use('/', authRoutes);
 app.use(function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
-      res.status(401).send('Invalid Signin!!');
+      res.status(401).json({error: "Unauthorized User!"});
     }
   });
 
