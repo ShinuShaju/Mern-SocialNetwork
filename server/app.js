@@ -19,6 +19,7 @@ mongoose.connection.on("error", err => {
 // importing routes middleware
 const postRoutes = require('./routes/post.js');
 const authRoutes = require('./routes/auth.js');
+const userRoutes = require('./routes/user.js');
 
 // middleware
 app.use(morgan("dev"));
@@ -27,6 +28,8 @@ app.use(cookieParser());
 app.use(expressValidator());
 app.use('/', postRoutes);
 app.use('/', authRoutes);
+app.use('/', userRoutes);
+
 app.use(function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
       res.status(401).json({error: "Unauthorized User!"});
