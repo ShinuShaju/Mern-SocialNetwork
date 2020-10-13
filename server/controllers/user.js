@@ -30,7 +30,7 @@ exports.allUsers = (req, res) => {
             });
         }
         res.json ({ users });
-    }).select("name email updated created_on");
+    }).select("name email updated_on created_on");
 };
 
 exports.getUser = (req, res) => {
