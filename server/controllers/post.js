@@ -1,4 +1,6 @@
 const Post = require('../models/post')
+const formidable = require('formidable');
+const fs = require('fs')
 
 // get posts from DB
 exports.getPosts = (req, res) => {
@@ -14,13 +16,35 @@ exports.getPosts = (req, res) => {
 // save posts into DB
 exports.createPost = (req, res) => {
    
-    const post = new Post(req.body);
+    let form = new formidable.IncomingForm()
+    form.keepExtensions = true;
 
-    post.save().then (result => {
-        res.json ({
-            post:result
+    form.parse(req, (err, fields, files) => {
+        if (err) {
+            return res.status(400).json({
+                error: "Image could not be uploaded!"
+            })
+          return;
+        }
+
+        let post = new Post(fields);
+        post.postedBy = req.profile;
+
+        if(files.photo) {
+            post.photo.data = fs.readFileSync(files.photo.path);
+            post.photo.contentType = fs.photo.type;
+        }
+
+        post.save((err, result) => {
+            if(err) {
+                res.status(400).json({
+                    error: err
+                })
+            }
+            res.json(result)
         })
 
-    })
+      });
+      
 };
 
