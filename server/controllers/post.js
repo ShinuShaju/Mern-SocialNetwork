@@ -28,6 +28,9 @@ exports.createPost = (req, res) => {
         }
 
         let post = new Post(fields);
+
+        req.profile.hashed_password = undefined;
+        req.profile.salt = undefined; 
         post.postedBy = req.profile;
 
         if(files.photo) {
