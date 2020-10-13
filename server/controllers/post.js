@@ -1,6 +1,7 @@
 const Post = require('../models/post')
 const formidable = require('formidable');
-const fs = require('fs')
+const fs = require('fs');
+const { sortBy } = require('lodash');
 
 // get posts from DB
 exports.getPosts = (req, res) => {
@@ -51,4 +52,19 @@ exports.createPost = (req, res) => {
       });
       
 };
+
+
+exports.postsByUser = (req, res) => {
+    Post.find({ postedBy: req.profile._id})
+    .populate("postedBy", "_id name")
+    .sort("_created")
+    .exec((err, posts) => {
+        if(err) {
+            res.status(400).json ({
+                error: err
+            })
+        }
+        res.json(posts);
+    })
+}
 
