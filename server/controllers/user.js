@@ -1,3 +1,4 @@
+const user = require('../models/user');
 const User = require('../models/user');
 
 exports.userById = (req, res, next, id) => {
@@ -17,6 +18,17 @@ exports.hasAuthorization = (req, res, next) => {
     if(!authorized) {
         res.status(403).json ({
             error: "User is not authorized to perform this task!"
-        })
+        });
     }
 }
+
+exports.allUsers = (req, res) => {
+    User.find((err, users) => {
+        if (err) {
+            res.status(400).json ({
+                error: err
+            });
+        }
+        res.json ({ users });
+    });
+};
