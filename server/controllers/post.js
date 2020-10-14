@@ -1,7 +1,7 @@
 const Post = require('../models/post')
 const formidable = require('formidable');
 const fs = require('fs');
-const { sortBy } = require('lodash');
+const _ = require('lodash');
 
 
 exports.postById = (req, res, next, id) => {
@@ -13,7 +13,7 @@ exports.postById = (req, res, next, id) => {
                 error: "Post not found!"
             })
         }
-        req.post = post; // adds profile information in object in req with user info.
+        req.post = post; // adds post information in object in req with post info.
         next();
     })
 }
@@ -91,6 +91,20 @@ exports.isPoster = (req, res, next) => {
         });
     }
     next();
+}
+
+exports.updatePost = (req, res) => {
+    let post = req.post;
+    post = _.extend(post, req.body); // mutate the source object
+    post.updated = Date.now();
+    post.save((err) => {
+        if(err) {
+            return res.status(400).json({
+                error: "You aren't authorized to perform this action"
+            })
+        }
+        res.json(post);
+    })
 }
 
 exports.deletePost = (req, res) => {
