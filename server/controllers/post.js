@@ -3,6 +3,21 @@ const formidable = require('formidable');
 const fs = require('fs');
 const { sortBy } = require('lodash');
 
+
+exports.postById = (req, res, next, id) => {
+    Post.findById(id)
+    .populate("postedBy", "_id name")
+    .exec((err, post) => {
+        if(err || !post) {
+            return res.status(400).json ({
+                error: "Post not found!"
+            })
+        }
+        req.post = post; // adds profile information in object in req with user info.
+        next();
+    })
+}
+
 // get posts from DB
 exports.getPosts = (req, res) => {
 
@@ -68,3 +83,24 @@ exports.postsByUser = (req, res) => {
     })
 }
 
+exports.isPoster = (req, res, next) => {
+    const isPoster = req.post && req.auth && req.post.postedBy._id == req.auth._id;
+    if(!isPoster) {
+        res.status(403).json ({
+            error: "User is not authorized to perform this task!"
+        });
+    }
+    next();
+}
+
+exports.deletePost = (req, res) => {
+    let post = req.post;
+    post.remove((err, post) => {
+        if(err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        res.status(200).json({ message: "Post deleted!"});
+    })
+}
