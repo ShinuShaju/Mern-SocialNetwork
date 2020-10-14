@@ -20,6 +20,7 @@ exports.hasAuthorization = (req, res, next) => {
             error: "User is not authorized to perform this task!"
         });
     }
+    next();
 }
 
 exports.allUsers = (req, res) => {
@@ -55,7 +56,7 @@ exports.updateUser = (req, res, next) => {
     })
 }
 
-exports.deleteUser = (req, res, next) => {
+exports.deleteUser = (req, res) => {
     let user = req.profile;
     user.remove((err, user) => {
         if(err) {
